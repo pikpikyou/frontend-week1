@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <!-- 顶部导航栏 -->
+    <header>
+        <h1>我的技术博客</h1>
+        <nav>
+            <a href=" ">首页</a>
+            <a href="#">文章</a>
+            <a href="#">关于我</a>
+        </nav>
+    </header>
+
+    <!-- 中间主要内容区 -->
+    <main>
+        <div class="todo-container">
+            <h3>待办事项</h3>
+            <input type="text" id="todoInput" placeholder="输入待办事项...">
+            <button id="addTodo">添加</button>
+            <ul id="todoList"></ul>
+        </div>
+        <button id="hideBtn">隐藏文章</button>
+        <!-- 左侧文章列表 -->
+        <section>
+            <h2>最新文章</h2>
+            <article>
+                <h3>HTML入门第一天</h3>
+                <p>今天学习了HTML的基本结构...</p>
+            </article>
+            <article>
+                <h3>CSS布局技巧</h3>
+                <p>Flex布局真的很方便...</p>
+            </article>
+        </section>
+
+        <!-- 右侧登录表单 -->
+        <aside>
+            <h2>登录</h2>
+            <form>
+                <label for="username">用户名：</label>
+                <input type="text" id="username" name="username"><br><br>
+
+                <label for="password">密码：</label>
+                <input type="password" id="password" name="password"><br><br>
+
+                <input type="submit" value="登录">
+            </form>
+        </aside>
+    </main>
+
+    <!-- 底部版权信息 -->
+    <footer>
+        <p>© 2023 我的技术博客 版权所有</p>
+    </footer>
+</body>
+
+<style>
+    header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background-color: #f4f4f4;
+        padding: 10px;
+    }
+
+    section {
+        display: flex;
+        gap: 20px;
+        padding: 20px;
+        flex-wrap: wrap;
+    }
+
+    article {
+        width: 300px;
+        border: 1px solid #ddd;
+        padding: 15px;
+        border-radius: 8px;
+    }
+
+    form {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        padding: 20px;
+    }
+
+    input[type="text"],
+    input[type="password"] {
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+
+    input[type="submit"] {
+        padding: 10px;
+        background-color: #2196f3;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    input[type="submit"]:hover {
+        background-color: #0b7dda;
+    }
+
+    @media (max-width: 600px) {
+        header {
+            flex-direction: column;
+            /* 导航栏垂直排列 */
+        }
+
+        section {
+            justify-content: center;
+            /* 文章在中间显示 */
+        }
+
+        article {
+            width: 100%;
+            /* 文章占满屏幕宽度 */
+        }
+    }
+</style>
+<script>
+    let username = "前端学习者";
+    let age = 25;
+    let isLogin = false;
+    console.log("用户名:", username);
+    console.log("年龄:", age);
+
+    function sayHello() {
+        let message = "欢迎学习JavaScript!";
+        alert(message);
+        console.log("函数执行了:", message);
+    }
+
+    sayHello();
+
+    let loginTitel = document.querySelector("aside h2");
+    console.log("获取到的标题元素:", loginTitel);
+
+    loginTitel.innerHTML = "用户登录(JS修改版)";
+    // 获取按钮和文章列表
+    let hideBtn = document.querySelector("#hideBtn");
+    let articles = document.querySelector("section");
+    hideBtn.onclick = function () {
+        if (articles.style.display !== "none") {
+            articles.style.display = "none"; //隐藏
+            hideBtn.textContent = "显示文章";//按钮文字变显示
+        } else {
+            articles.style.display = "flex";
+            hideBtn.textContent = "隐藏文章"; //按钮文字变隐藏
+        }
+    }
+    let usernameInput = document.querySelector("#username");
+    let passwordInput = document.querySelector("#password");
+    let submitBtn = document.querySelector('input[type="submit"]');
+    let loginForm = document.querySelector("form");
+
+    loginForm.onsubmit = function (event) {
+        event.preventDefault(); // 阻止刷新页面
+        console.log("表单提交了，没有刷新！");
+    };
+
+    loginForm.onsubmit = function (event) {
+        event.preventDefault();
+
+        let username = usernameInput.value;
+        let password = passwordInput.value;
+
+        // 非空验证
+        if (username === "") {
+            alert("请输入用户名！");
+            return;
+        }
+
+        // 密码长度验证
+        if (password.length < 6) {
+            alert("密码至少6位！");
+            return;
+        }
+
+        alert(`登录成功！欢迎 ${username}`);
+    };
+
+    // 获取DOM元素（第1步：准备工作）
+    let todoInput = document.querySelector("#todoInput"); // 输入框
+    let addTodoBtn = document.querySelector("#addTodo"); // 添加按钮
+    let todoList = document.querySelector("#todoList"); // 待办列表容器（ul）
+
+    // 监听按钮点击事件（第2步：注册事件）
+    addTodoBtn.onclick = function () {
+        // 第3步：获取输入框的值
+        let todoText = todoInput.value;
+
+        // 第4步：验证输入（防止空待办）
+        if (todoText === "") {
+            alert("请输入待办事项！");
+            return; // 验证失败，退出函数
+        }
+
+        // 第5步：创建新的待办项（li标签）
+        let li = document.createElement("li"); // 创建<li>元素
+        li.textContent = todoText; // 设置文本内容
+
+        // 第6步：创建删除按钮
+        let deleteBtn = document.createElement("button");
+        deleteBtn.textContent = "删除";
+
+        // 第7步：为删除按钮绑定点击事件
+        deleteBtn.onclick = function () {
+            todoList.removeChild(li); // 点击时从列表中移除当前li
+        };
+
+        // 第8步：将删除按钮添加到li中
+        li.appendChild(deleteBtn);
+
+        // 第9步：将完整的li添加到待办列表（ul）中
+        todoList.appendChild(li);
+
+        // 第10步：清空输入框，准备下一次输入
+        todoInput.value = "";
+  
+    };
+
+    todoInput.addEventListener("keydown", function(event) {
+            if(event.key === "Enter") {
+                event.preventDefault();
+                addTodoBtn.click();
+            }
+        });
+</script>
+
+</html>
